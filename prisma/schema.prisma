@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Site {
+  id             String     @id @default(cuid())
+  name           String
+  address        String
+  council        String
+  zone           String
+  overlays       String
+  areaSqm        Float
+  frontageM      Float
+  depthM         Float
+  isCorner       Boolean
+  easementsNotes String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  scenarios      Scenario[]
+}
+
+model Scenario {
+  id                        String   @id @default(cuid())
+  siteId                    String
+  site                      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  name                      String
+  productType               String
+  dwellings                 Int
+  storeys                   Int
+  grossFloorAreaPerDwelling Float
+  specLevel                 String
+  includesBasement          Boolean
+  basementAreaSqm           Float?
+  
+  // JSON blobs for structured inputs
+  planningInputs            String
+  costInputs                String
+  financeInputs             String
+  salesInputs               String
+  taxInputs                 String
+
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+}
