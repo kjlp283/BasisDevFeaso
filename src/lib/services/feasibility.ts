@@ -17,9 +17,12 @@ export function calculateFeasibility(
     const totalGfa = scenario.grossFloorAreaPerDwelling * scenario.dwellings;
     const basementArea = scenario.includesBasement ? (scenario.basementAreaSqm || 0) : 0;
 
-    const constructionBase =
+    const baseBuildCost =
         totalGfa * costInputs.buildRatePerSqm +
         basementArea * (costInputs.basementRatePerSqm || 0);
+
+    const builderMargin = baseBuildCost * (costInputs.builderMarginPercent / 100);
+    const constructionBase = baseBuildCost + builderMargin;
 
     // 2. Soft Costs
     let softCosts = 0;
@@ -100,6 +103,7 @@ export function calculateFeasibility(
 
     return {
         scenarioId: scenario.id,
+        grossRealisation: grossSales,
         totalDevelopmentCost,
         netSalesValue,
         profit,

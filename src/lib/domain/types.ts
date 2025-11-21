@@ -118,6 +118,7 @@ export type BankabilityFlag = "Red" | "Amber" | "Green";
 
 export interface FeasibilityResult {
   scenarioId: string;
+  grossRealisation: number;
   totalDevelopmentCost: number;
   netSalesValue: number;
   profit: number;
